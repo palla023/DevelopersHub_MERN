@@ -2,23 +2,24 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faGithub } from '@fortawesome/free-brands-svg-icons';
+
+import './Myprofile.css'
 
 const Myprofile = () => {
-  const [data, setData] = useState(null);
+  const [data, setData] = useState(null); //my profile is a single object of contains Logged user details taken from the middleware JWT
   const [review, setReview] = useState([]);
   const navigate = useNavigate();
   useEffect(() => {
     axios
-      .get("https://developershub-mern.onrender.com/myprofile", {
+      .get("http://localhost:5000/myprofile", {
         headers: {
           "x-token": localStorage.getItem("token"),
         },
       })
       .then((res) => setData(res.data));
+
     axios
-      .get("https://developershub-mern.onrender.com/myreview", {
+      .get("http://localhost:5000/myreview", {
         headers: {
           "x-token": localStorage.getItem("token"),
         },
@@ -32,51 +33,52 @@ const Myprofile = () => {
   return (
     <div>
       <nav className="navbar bg-dark">
-        <h1>
-          <Link>
-            <i className="fas fa-code"></i>Developers Hub
+        <h1 className="navbar-brand">
+          <Link to="/dashboard" className="brand-link">
+            <i className="fas fa-code"></i> Developers Hub
           </Link>
         </h1>
-        <ul>
+        <ul className="navbar-menu">
           <li>
-            <Link to="/dashboard">Dashboard</Link>
+            <Link to="/dashboard" className="nav-link">Dashboard</Link>
           </li>
           <li>
-            <Link to="/login" onClick={() => localStorage.removeItem("token")}>
-              Logout
-            </Link>
+            <Link to="/login" className="nav-link" onClick={() => localStorage.removeItem("token")}>Logout</Link>
           </li>
         </ul>
       </nav>
-      <div className="profiles container">
-        {data && (
-          <div className='card shadow w-50  profile bg-light '>
-		  <img src="https://wallpapercave.com/wp/wp9566448.jpg" alt='' 
-		  style={{borderRadius:'50%'}} />
-		  <div>
-			  <h2>{data.fullname}</h2>
 
-			  <p>
-				  {data.email}
-			  </p>
-			  <ul>
-				  {data.skill.split(",").map(skill =>
-					  <li><i className='fa fa-check' />{skill}</li>
-				  )}
-			  </ul>
-			  {/* <p style={{marginLeft:"36px"}}>Hyd</p> */}
-			  <Link  className='btn btn-primary' style={{ marginLeft: "36px" }}>
-				  View Profile
-			  </Link>
-		  </div>
-	  </div>
-		
+      <div className="container profiles">
+        {data && (
+          <div className="card shadow profile-card bg-light">
+            <div className="row no-gutters">
+              <div className="col-md-6 d-flex align-items-center left-section">
+                <img src="https://wallpapercave.com/wp/wp9566448.jpg" alt='' className="profile-img" />
+                <div className="profile-info">
+                  <h2>{data.fullname}</h2>
+                  <p>{data.email}</p>
+                  <Link to={`/indprofile/${data.fullname}/${data.email}/${data.skill}/${data._id}`} className='btn btn-primary'>
+                    View Profile
+                  </Link>
+                </div>
+              </div>
+              <div className="col-md-6 right-section">
+                <h3>Skills</h3>
+                <ul className="skills-list">
+                  {data.skill.split(',').map(skill => (
+                    <li key={skill}><i className='fa fa-check' /> {skill}</li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
         )}
-        <h1>Reviews and Ratings</h1>
-        {review ? (
-          review.map((review) => (
-            <div style={{ width: "50%" }}>
-              {/* who is Given the Rating */}
+
+
+        <h1 className="mt-4">Reviews and Ratings</h1>
+        {review && review.length > 0 ? (
+          review.map((review, index) => (
+            <div className="review-card my-2" key={index}>
               <h4>{review.taskprovider}</h4>
               <p>{review.rating}/5</p>
             </div>
@@ -84,28 +86,6 @@ const Myprofile = () => {
         ) : (
           <p>No Reviews Added Yet</p>
         )}
-        <form className="form">
-          <div
-            className="form-group"
-            style={{ border: "1px solid black", width: "50%" }}
-          >
-            <label><FontAwesomeIcon icon={faGithub } />  Enter Your Reviews</label>
-            <input
-              type="text"
-              placeholder="Enter Your Rating"
-              name="text"
-              value=""
-              // onChange={changeHandler}  onSubmit={submitHandler}
-              required
-              className="mt-1"
-            />
-            <input
-              type="submit"
-              className="btn btn-primary m-2"
-              value="Add Rating"
-            />
-          </div>
-        </form>
       </div>
     </div>
   );

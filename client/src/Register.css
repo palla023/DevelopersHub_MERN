@@ -1,0 +1,91 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding-top: 9.5px;
+}
+
+body {
+  font-family: 'Raleway', sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
+  background-color: #fff;
+  color: #333;
+  margin-top: 10px;
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.7rem 2rem;
+  position: fixed;
+  z-index: 1;
+  width: 100%;
+  top: 0;
+  opacity: 0.9;
+  margin: 0;
+}
+
+.navbar ul {
+  display: flex;
+  list-style: none;
+}
+
+
+.navbar a {
+  color: #fff;
+  padding: 0.45rem;
+  margin: 0 0.25rem;
+  text-decoration: none;
+}
+.navbar li a:hover {
+  background-color: #f37f12; 
+  color: #000; 
+  border-radius: 5px;
+}
+
+
+.form input[type='text'],
+.form input[type='number'],
+.form input[type='email'],
+.form input[type='password'],
+.form input[type='submit'] {
+  display: block;
+  width: 50%;
+  padding: 0.4rem;
+  font-size: 1.2rem;
+  border: 1px solid #ccc;
+  
+}
+input:focus {
+  outline: none;
+}
+
+.naviagte-link {
+  display: inline-block;
+  background: #007bff; 
+  color: #fff; 
+  padding: 0.5rem 1rem; 
+  border-radius: 4px; 
+  text-decoration: none; 
+  font-size: 1rem;
+  transition: background-color 0.3s ease, color 0.3s ease; 
+}
+
+.naviagte-link:hover {
+  background-color: #0056b3; 
+  color: #fff; 
+}
+
+.signup-prompt {
+  text-align: center; 
+  margin: 1rem; 
+  padding: 0 1rem; 
+}
+
+
+
+
+
+

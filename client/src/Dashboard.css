@@ -1,0 +1,72 @@
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .navbar-brand {
+    margin: 0;
+  }
+  
+  .navbar-menu {
+    list-style: none;
+    display: flex;
+    gap: 20px; 
+    margin: 0;
+  }
+  
+
+  .brand-link, .nav-link {
+    color: #fff;
+    text-decoration: none;
+    font-size: 1.5rem;
+    transition: color 0.3s ease;
+  }
+  
+  .brand-link:hover:hover {
+    color: #f39c12; 
+    text-decoration: underline; 
+  }
+  
+  .navbar-menu li a {
+    padding: 5px 10px;
+    border-radius: 5px;
+  }
+  
+  .navbar-menu li a:hover {
+    background-color: #f39c12; 
+    color: #000; 
+  }
+  
+.profile-card {
+    padding: 20px;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 20px;
+  }
+  
+  .left-section .profile-img {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    margin-right: 20px;
+  }
+  
+
+  .right-section {
+    text-align: left;
+  }
+  
+  .skills-list {
+    list-style-type: none;
+    padding-left: 0;
+  }
+  
+  .skills-list li {
+    margin-bottom: 10px;
+    font-size: 16px;
+  }
+  
+  .skills-list i {
+    color: green;
+  }
+  

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import './Register.css'
 
 const Login = () => {
   const navigate = useNavigate();
@@ -17,10 +18,20 @@ const Login = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    axios.post("https://developershub-mern.onrender.com/login", formData).then((res) => {
-      localStorage.setItem("token", res.data.token);
-      setAuth(true);
-    });
+    try {
+      await axios.post("http://localhost:5000/login", formData).then((res) => {
+        localStorage.setItem("token", res.data.token);
+        setAuth(true);
+      });
+    } catch (err) {
+      if (err.response) {
+        if (err.response.status === 400) {
+          alert(err.response.data)
+        } else {
+          alert("Internal Server Error")
+        }
+      }
+    }
   };
   // if(localStorage.getItem('token'))
   // {
@@ -33,11 +44,11 @@ const Login = () => {
   return (
     <>
       <nav className="navbar bg-dark">
-        <h1>
+        <h3>
           <Link to="/">
-            <i className="fas fa-code"></i>Developers Hub
+            <i className="fas fa-code"></i> Developers Hub
           </Link>
-        </h1>
+        </h3>
         <ul>
           <li>
             <Link to="/register">Register</Link>
@@ -47,36 +58,36 @@ const Login = () => {
           </li>
         </ul>
       </nav>
-      <h1 className="large text-primary">Sign In</h1>
+      <h1 className="text-primary pt-5">Sign In</h1>
       <p className="lead">
         <i className="fas fa-user" /> Sign into Your Account
       </p>
       <form className="form" onSubmit={submitHandler}>
-        <div className="form-group">
-          <input
-            type="email"
-            placeholder="Email Address"
-            name="email"
-            value={email}
-            onChange={changeHandler}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <input
-            type="password"
-            placeholder="Password"
-            name="password"
-            minLength="6"
-            value={password}
-            onChange={changeHandler}
-          />
-        </div>
-        <input type="submit" className="btn btn-primary" value="Login" />
+        <input
+          type="email"
+          placeholder="Email Address"
+          name="email"
+          value={email}
+          onChange={changeHandler}
+          className='my-2 rounded'
+          required
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          name="password"
+          minLength="6"
+          className='my-2 rounded'
+          value={password}
+          onChange={changeHandler}
+        />
+        <input type="submit" className="btn btn-primary loginButton" value="Login" />
       </form>
-      <p className="my-1">
-        Don't have an account? <Link to="/register">Sign Up</Link>
+      <p className="signup-prompt">
+        Don't have an account? <Link to="/register" className="naviagte-link">Sign Up</Link>
       </p>
+
+
     </>
   );
 };

@@ -6,11 +6,11 @@ const Home = () => {
 	return (
 		<div>
 			<nav className='navbar bg-dark' >
-				<h1>
+				<h3>
 					<Link to='/'><i className='fas fa-code'></i> Developers Hub</Link>
-				</h1>
+				</h3>
 				<ul>
-				<li><Link to="/register">
+					<li><Link to="/register">
 						Register
 					</Link></li>
 					<li><Link to="/login">
