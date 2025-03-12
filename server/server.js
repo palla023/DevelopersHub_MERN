@@ -14,13 +14,7 @@ app.use(
   })
 );
 mongoose.set('strictQuery', true)
-const path = require('path');
-__dirname = path.resolve();
-// Serve static files from the React app build folder
-app.use(express.static(path.join(__dirname, 'client/build')));
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
-});
+
 
 mongoose
   .connect(
@@ -132,4 +126,13 @@ app.get("/myreview", middleware, async (req, res) => {
     return res.status(500).send("Internal Error");
   }
 });
+
+const path = require('path');
+__dirname = path.resolve();
+// Serve static files from the React app build folder
+app.use(express.static(path.join(__dirname, 'client/build')));
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+});
+
 app.listen(5000, () => console.log("Server is Running..."));
