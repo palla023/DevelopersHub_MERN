@@ -21,7 +21,7 @@ const Register = () => {
 	
 	  const submitHandler = async e => {
 		e.preventDefault();
-    axios.post('http://localhost:5000/register', formData).then(
+    axios.post('https://developershub-mern.onrender.com/register', formData).then(
 			res =>alert(res.data));
       navigate("/login");
 	  };

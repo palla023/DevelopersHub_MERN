@@ -17,7 +17,7 @@ const Login = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    axios.post("http://localhost:5000/login", formData).then((res) => {
+    axios.post("https://developershub-mern.onrender.com/login", formData).then((res) => {
       localStorage.setItem("token", res.data.token);
       setAuth(true);
     });

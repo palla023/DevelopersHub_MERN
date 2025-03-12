@@ -11,14 +11,14 @@ const Myprofile = () => {
   const navigate = useNavigate();
   useEffect(() => {
     axios
-      .get("http://localhost:5000/myprofile", {
+      .get("https://developershub-mern.onrender.com/myprofile", {
         headers: {
           "x-token": localStorage.getItem("token"),
         },
       })
       .then((res) => setData(res.data));
     axios
-      .get("http://localhost:5000/myreview", {
+      .get("https://developershub-mern.onrender.com/myreview", {
         headers: {
           "x-token": localStorage.getItem("token"),
         },

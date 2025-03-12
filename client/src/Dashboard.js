@@ -7,7 +7,7 @@ const Dashboard = () => {
 
 	const [data, setData] = useState([]);
 	useEffect(() => {
-		axios.get('http://localhost:5000/allprofiles', {
+		axios.get('https://developershub-mern.onrender.com/allprofiles', {
 			headers: {
 				'x-token': localStorage.getItem('token')
 			}

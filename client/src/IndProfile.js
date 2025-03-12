@@ -11,7 +11,7 @@ const IndProfile = () => {
   const submitHandler = (e) => {
     e.preventDefault();
     axios
-      .get("http://localhost:5000/myprofile", {
+      .get("https://developershub-mern.onrender.com/myprofile", {
         headers: {
           "x-token": localStorage.getItem("token"),
         },
@@ -23,7 +23,7 @@ const IndProfile = () => {
       rating,
     };
     axios
-      .post("http://localhost:5000/addreview", review, {
+      .post("https://developershub-mern.onrender.com/addreview", review, {
         headers: {
           "x-token": localStorage.getItem("token"),
         },
