@@ -1,11 +1,15 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import axios from "axios";
-import './Register.css'
+import { API_BASE_URL } from "./config";
+import { useToast } from "./Toast";
+import "./Register.css";
 
 const Login = () => {
   const navigate = useNavigate();
-  const [auth, setAuth] = useState(false);
+  const { showToast } = useToast();
+  const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -13,82 +17,127 @@ const Login = () => {
 
   const { email, password } = formData;
 
+  if (localStorage.getItem("token")) {
+    return <Navigate to="/dashboard" replace />;
+  }
+
   const changeHandler = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const submitHandler = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
-      await axios.post("http://localhost:5000/login", formData).then((res) => {
-        localStorage.setItem("token", res.data.token);
-        setAuth(true);
-      });
+      const res = await axios.post(`${API_BASE_URL}/login`, formData);
+      localStorage.setItem("token", res.data.token);
+      showToast("Welcome back! Successfully signed in.", "success");
+      navigate("/dashboard");
     } catch (err) {
-      if (err.response) {
-        if (err.response.status === 400) {
-          alert(err.response.data)
-        } else {
-          alert("Internal Server Error")
-        }
-      }
+      const msg =
+        err.response && typeof err.response.data === "string"
+          ? err.response.data
+          : "Invalid email or password. Please try again.";
+      showToast(msg, "error");
+    } finally {
+      setLoading(false);
     }
   };
-  // if(localStorage.getItem('token'))
-  // {
-  // 	return navigate("/dashboard");
-  // }
-  if (auth) {
-    return navigate("/dashboard");
-  }
 
   return (
-    <>
-      <nav className="navbar bg-dark">
-        <h3>
-          <Link to="/">
-            <i className="fas fa-code"></i> Developers Hub
+    <div className="auth-page">
+      <div className="auth-card">
+        <div className="auth-header">
+          <div className="auth-icon-badge">
+            <i className="fa-solid fa-lock"></i>
+          </div>
+          <h1 className="auth-title">Welcome Back</h1>
+          <p className="auth-subtitle">
+            Sign in to your DevelopersHub account to browse developers and discussions
+          </p>
+        </div>
+
+        <form className="auth-form" onSubmit={submitHandler}>
+          <div>
+            <label className="input-label" htmlFor="email">
+              Email Address
+            </label>
+            <div className="input-with-icon">
+              <i className="fa-solid fa-envelope input-icon"></i>
+              <input
+                id="email"
+                type="email"
+                placeholder="name@example.com"
+                name="email"
+                value={email}
+                onChange={changeHandler}
+                className="modern-input"
+                required
+                autoComplete="email"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="input-label" htmlFor="password">
+              Password
+            </label>
+            <div className="input-with-icon">
+              <i className="fa-solid fa-key input-icon"></i>
+              <input
+                id="password"
+                type={showPassword ? "text" : "password"}
+                placeholder="Enter your password"
+                name="password"
+                minLength="6"
+                className="modern-input"
+                value={password}
+                onChange={changeHandler}
+                required
+                autoComplete="current-password"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                style={{
+                  position: "absolute",
+                  right: "14px",
+                  background: "transparent",
+                  border: "none",
+                  color: "#64748b",
+                  cursor: "pointer",
+                }}
+                aria-label={showPassword ? "Hide password" : "Show password"}
+              >
+                <i className={`fa-solid ${showPassword ? "fa-eye-slash" : "fa-eye"}`}></i>
+              </button>
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            className="btn-modern-primary btn-auth-submit"
+            disabled={loading}
+          >
+            {loading ? (
+              <>
+                <i className="fa-solid fa-spinner fa-spin"></i> Signing In...
+              </>
+            ) : (
+              <>
+                <i className="fa-solid fa-arrow-right-to-bracket"></i> Sign In
+              </>
+            )}
+          </button>
+        </form>
+
+        <div className="auth-footer">
+          Don't have an account yet?
+          <Link to="/register" className="auth-link">
+            Create an Account
           </Link>
-        </h3>
-        <ul>
-          <li>
-            <Link to="/register">Register</Link>
-          </li>
-          <li>
-            <Link to="/login">Login</Link>
-          </li>
-        </ul>
-      </nav>
-      <h1 className="text-primary pt-5">Sign In</h1>
-      <p className="lead">
-        <i className="fas fa-user" /> Sign into Your Account
-      </p>
-      <form className="form" onSubmit={submitHandler}>
-        <input
-          type="email"
-          placeholder="Email Address"
-          name="email"
-          value={email}
-          onChange={changeHandler}
-          className='my-2 rounded'
-          required
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          name="password"
-          minLength="6"
-          className='my-2 rounded'
-          value={password}
-          onChange={changeHandler}
-        />
-        <input type="submit" className="btn btn-primary loginButton" value="Login" />
-      </form>
-      <p className="signup-prompt">
-        Don't have an account? <Link to="/register" className="naviagte-link">Sign Up</Link>
-      </p>
-
-
-    </>
+        </div>
+      </div>
+    </div>
   );
 };
 
